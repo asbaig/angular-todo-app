@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TodoItem } from './components/todo-item/todo-item';
 import { Todo } from './models/todo';
+import { TodoList } from './components/todo-list/todo-list';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TodoItem],
+  imports: [RouterOutlet, TodoList],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
