@@ -1,7 +1,5 @@
-<p>todo-item works!</p>
-
-<div>
+<div class="todo-item" (click)="onToggle()">
   <h1>id: {{ todo.id }}</h1>
-  <h1>title: {{ todo.title }}</h1>
-  <h1>completed: {{ todo.completed ? 'Completed' : 'Not Completed' }}</h1>
+  <span [class.completed]="todo.completed">title: {{ todo.title }}</span>
+  <h1>completed: {{ todo.completed ? "Completed" : "Not Completed" }}</h1>
 </div>

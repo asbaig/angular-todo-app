@@ -1,0 +1,9 @@
+.todo-item {
+  cursor: pointer;
+  padding: 0.5rem;
+
+  span.completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+}

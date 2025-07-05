@@ -1,5 +1,5 @@
-<p>todo-list works!</p>
+<h1>Todo List</h1>
 
 @for (todo of todos; track todo.id) {
-  <app-todo-item [todo]="todo"></app-todo-item>
+  <app-todo-item [todo]="todo" (toggle)="toggleTodo($event)"></app-todo-item>
 }

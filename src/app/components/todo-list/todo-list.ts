@@ -6,24 +6,39 @@ import { TodoItem } from '../todo-item/todo-item';
   selector: 'app-todo-list',
   imports: [TodoItem],
   templateUrl: './todo-list.html',
-  styleUrl: './todo-list.scss'
+  styleUrl: './todo-list.scss',
 })
 export class TodoList {
   todos: Todo[] = [
     {
       id: 1,
       title: 'Learn Angular',
-      completed: false
+      completed: false,
     },
     {
       id: 2,
       title: 'Learn React',
-      completed: false
+      completed: false,
     },
     {
       id: 3,
       title: 'Learn Vue',
-      completed: false
-    }
+      completed: false,
+    },
   ];
+
+  toggleTodo(id: number) {
+    console.log('message received', id);
+
+    this.todos = this.todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          completed: !todo.completed,
+        };
+      }
+
+      return todo;
+    });
+  }
 }
