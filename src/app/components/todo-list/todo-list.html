@@ -3,5 +3,9 @@
 <app-todo-form (add)="addTodo($event)"></app-todo-form>
 
 @for (todo of todos; track todo.id) {
-  <app-todo-item [todo]="todo" (toggle)="toggleTodo($event)"></app-todo-item>
+<app-todo-item
+  [todo]="todo"
+  (toggle)="toggleTodo($event)"
+  (delete)="deleteTodo($event)"
+></app-todo-item>
 }

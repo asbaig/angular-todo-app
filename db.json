@@ -1,33 +1,13 @@
 {
   "todos": [
     {
-      "id": "1",
-      "title": "Learn Angular",
-      "completed": false
-    },
-    {
-      "id": "2",
-      "title": "Learn React",
-      "completed": false
-    },
-    {
       "id": "3",
       "title": "Learn Vue",
       "completed": false
     },
     {
-      "id": 4,
-      "title": "df",
-      "completed": false
-    },
-    {
-      "id": 5,
-      "title": "zxdv",
-      "completed": false
-    },
-    {
-      "id": "fd57",
-      "title": "ads",
+      "id": "cfd2",
+      "title": "Learn Angular",
       "completed": false
     }
   ]

@@ -1,3 +1,4 @@
 <div class="todo-item" (click)="onToggle()">
   <span [class.completed]="todo.completed">{{ todo.title }}</span>
+  <button (click)="onDelete($event)">Delete</button>
 </div>

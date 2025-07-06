@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Todo } from '../../models/todo';
+import { TodoService } from '../../services/todo';
 
 @Component({
   selector: 'app-todo-item',
@@ -11,8 +12,16 @@ export class TodoItem {
   @Input() todo!: Todo;
 
   @Output() toggle = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<number>();
 
   onToggle() {
+    console.log('clicked toggle on todo with id', this.todo.id);
     this.toggle.emit(this.todo.id);
+  }
+
+  onDelete(event: MouseEvent) {
+    event.stopPropagation();
+    console.log('clicked delete on todo with id', this.todo.id);
+    this.delete.emit(this.todo.id);
   }
 }

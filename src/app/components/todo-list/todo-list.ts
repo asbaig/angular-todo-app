@@ -44,4 +44,17 @@ export class TodoList implements OnInit {
   addTodo(newTodo: Todo) {
     this.todos = [...this.todos, newTodo];
   }
+
+  deleteTodo(id: number) {
+    this.todos = this.todos.filter((todo) => todo.id !== id);
+
+    this.todoService.deleteTodo(id).subscribe({
+      next: () => {
+        console.log('todo deleted');
+      },
+      error: (err) => {
+        console.error('error deleting todo, should notify user on UI', err);
+      },
+    });
+  }
 }

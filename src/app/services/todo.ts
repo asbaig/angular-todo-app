@@ -4,7 +4,7 @@ import { Todo } from '../models/todo';
 import { catchError, throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
   private apiUrl = 'http://localhost:3000/todos';
@@ -13,7 +13,7 @@ export class TodoService {
   getTodos() {
     return this.http.get<Todo[]>(this.apiUrl).pipe(
       catchError((err) => {
-        console.error("Error fetching todos", err);
+        console.error('Error fetching todos', err);
         return throwError(() => err);
       })
     );
@@ -22,9 +22,18 @@ export class TodoService {
   addTodo(todo: Todo) {
     return this.http.post<Todo>(this.apiUrl, todo).pipe(
       catchError((err) => {
-        console.error("Error adding todo", err);
+        console.error('Error adding todo', err);
         return throwError(() => err);
       })
-    )
+    );
+  }
+
+  deleteTodo(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      catchError((err) => {
+        console.error('Error deleting todo', err);
+        return throwError(() => err);
+      })
+    );
   }
 }
