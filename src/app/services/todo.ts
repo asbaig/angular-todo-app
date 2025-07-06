@@ -18,4 +18,13 @@ export class TodoService {
       })
     );
   }
+
+  addTodo(todo: Todo) {
+    return this.http.post<Todo>(this.apiUrl, todo).pipe(
+      catchError((err) => {
+        console.error("Error adding todo", err);
+        return throwError(() => err);
+      })
+    )
+  }
 }

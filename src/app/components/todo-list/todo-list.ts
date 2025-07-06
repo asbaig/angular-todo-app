@@ -21,7 +21,7 @@ export class TodoList implements OnInit {
         this.todos = todos;
       },
       error: (err) => {
-        console.log("got an error getting todos, should notify user on UI", err);
+        console.log('error getting todos, should notify user on UI', err);
       },
     });
   }
@@ -41,14 +41,7 @@ export class TodoList implements OnInit {
     });
   }
 
-  addTodo(title: string) {
-    this.todos = [
-      ...this.todos,
-      {
-        id: this.todos.length + 1,
-        title,
-        completed: false,
-      },
-    ];
+  addTodo(newTodo: Todo) {
+    this.todos = [...this.todos, newTodo];
   }
 }
