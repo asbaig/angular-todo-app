@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Todo } from '../../models/todo';
 import { TodoItem } from '../todo-item/todo-item';
 import { TodoForm } from '../todo-form/todo-form';
+import { TodoService } from '../../services/todo';
 
 @Component({
   selector: 'app-todo-list',
@@ -9,24 +10,21 @@ import { TodoForm } from '../todo-form/todo-form';
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
 })
-export class TodoList {
-  todos: Todo[] = [
-    {
-      id: 1,
-      title: 'Learn Angular',
-      completed: false,
-    },
-    {
-      id: 2,
-      title: 'Learn React',
-      completed: false,
-    },
-    {
-      id: 3,
-      title: 'Learn Vue',
-      completed: false,
-    },
-  ];
+export class TodoList implements OnInit {
+  todos: Todo[] = [];
+
+  private todoService = inject(TodoService);
+
+  ngOnInit(): void {
+    this.todoService.getTodos().subscribe({
+      next: (todos) => {
+        this.todos = todos;
+      },
+      error: (err) => {
+        console.log("got an error getting todos, should notify user on UI", err);
+      },
+    });
+  }
 
   toggleTodo(id: number) {
     console.log('message received', id);
