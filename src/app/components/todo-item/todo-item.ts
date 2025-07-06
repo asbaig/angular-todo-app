@@ -13,7 +13,6 @@ export class TodoItem {
   @Output() toggle = new EventEmitter<number>();
 
   onToggle() {
-    console.log('clicked todo item', this.todo.id);
     this.toggle.emit(this.todo.id);
   }
 }

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Todo } from '../../models/todo';
 import { TodoItem } from '../todo-item/todo-item';
+import { TodoForm } from '../todo-form/todo-form';
 
 @Component({
   selector: 'app-todo-list',
-  imports: [TodoItem],
+  imports: [TodoItem, TodoForm],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
 })
@@ -40,5 +41,16 @@ export class TodoList {
 
       return todo;
     });
+  }
+
+  addTodo(title: string) {
+    this.todos = [
+      ...this.todos,
+      {
+        id: this.todos.length + 1,
+        title,
+        completed: false,
+      },
+    ];
   }
 }
