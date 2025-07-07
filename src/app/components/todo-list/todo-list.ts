@@ -26,10 +26,9 @@ export class TodoList implements OnInit {
     });
   }
 
-  toggleTodo(id: number) {
-    console.log('message received', id);
-
-    this.todoService.toggleTodo(id).subscribe({
+  toggleTodo(updatedTodo: Todo) {
+    const id = updatedTodo.id!;
+    this.todoService.toggleTodo(id, updatedTodo.completed).subscribe({
       next: () => {
         console.log(`todo with id ${id} toggled successfully`);
 

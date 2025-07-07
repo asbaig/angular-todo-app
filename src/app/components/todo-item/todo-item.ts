@@ -11,12 +11,12 @@ import { TodoService } from '../../services/todo';
 export class TodoItem {
   @Input() todo!: Todo;
 
-  @Output() toggle = new EventEmitter<number>();
+  @Output() toggle = new EventEmitter<Todo>();
   @Output() delete = new EventEmitter<number>();
 
   onToggle() {
     console.log('clicked toggle on todo with id', this.todo.id);
-    this.toggle.emit(this.todo.id);
+    this.toggle.emit({ ...this.todo, completed: !this.todo.completed });
   }
 
   onDelete(event: MouseEvent) {
