@@ -45,4 +45,13 @@ export class TodoService {
       })
     );
   }
+
+  updateTitle(id: number, title: string) {
+    return this.http.patch<Todo>(`${this.apiUrl}/${id}`, { title }).pipe(
+      catchError((err) => {
+        console.error('Error updating todo', err);
+        return throwError(() => err);
+      })
+    );
+  }
 }

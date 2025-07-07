@@ -1,4 +1,21 @@
 <div class="todo-item" (click)="onToggle()">
-  <span [class.completed]="todo.completed">{{ todo.title }}</span>
-  <button (click)="onDelete($event)">Delete</button>
+  @if (editing) {
+    <input
+      type="text"
+      [(ngModel)]="newTitle"
+      name="newTitle"
+      (keyup.enter)="onSave($event)"
+    />
+  } @else {
+    <span [class.completed]="todo.completed">{{ todo.title }}</span>
+  }
+
+  <div>
+    @if (!editing) {
+      <button (click)="onEdit($event)">Edit</button>
+    } @else {
+      <button (click)="onSave($event)">Save</button>
+    }
+    <button (click)="onDelete($event)">Delete</button>
+  </div>
 </div>

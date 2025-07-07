@@ -64,4 +64,27 @@ export class TodoList implements OnInit {
       },
     });
   }
+
+  updateTitle(updatedTodo: Todo) {
+    const id = updatedTodo.id!;
+
+    this.todoService.updateTitle(id, updatedTodo.title).subscribe({
+      next: () => {
+        console.log(`todo with id ${id} updated successfully`);
+
+        this.todos = this.todos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              title: updatedTodo.title,
+            };
+          }
+          return todo;
+        });
+      },
+      error: (err) => {
+        console.error('error updating todo, should notify user on UI', err);
+      },
+    });
+  }
 }
