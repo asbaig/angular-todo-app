@@ -24,6 +24,8 @@ export class TodoForm {
 
     this.todoService.addTodo(newTodo).subscribe({
       next: (createdTodo) => {
+        console.log(`todo with id ${createdTodo.id} added successfully`);
+
         this.add.emit(createdTodo);
         this.title = '';
       },

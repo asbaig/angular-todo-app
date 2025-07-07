@@ -29,15 +29,23 @@ export class TodoList implements OnInit {
   toggleTodo(id: number) {
     console.log('message received', id);
 
-    this.todos = this.todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          completed: !todo.completed,
-        };
-      }
+    this.todoService.toggleTodo(id).subscribe({
+      next: () => {
+        console.log(`todo with id ${id} toggled successfully`);
 
-      return todo;
+        this.todos = this.todos.map((todo) => {
+          if (todo.id === id) {
+            return {
+              ...todo,
+              completed: !todo.completed,
+            };
+          }
+          return todo;
+        });
+      },
+      error: (err) => {
+        console.error('error toggling todo, should notify user on UI', err);
+      },
     });
   }
 
@@ -46,11 +54,11 @@ export class TodoList implements OnInit {
   }
 
   deleteTodo(id: number) {
-    this.todos = this.todos.filter((todo) => todo.id !== id);
-
     this.todoService.deleteTodo(id).subscribe({
       next: () => {
-        console.log('todo deleted');
+        console.log(`todo with id ${id} deleted successfully`);
+
+        this.todos = this.todos.filter((todo) => todo.id !== id);
       },
       error: (err) => {
         console.error('error deleting todo, should notify user on UI', err);

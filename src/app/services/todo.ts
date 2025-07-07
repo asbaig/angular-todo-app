@@ -36,4 +36,15 @@ export class TodoService {
       })
     );
   }
+
+  toggleTodo(id: number) {
+    return this.http
+      .patch<Todo>(`${this.apiUrl}/${id}`, { completed: true })
+      .pipe(
+        catchError((err) => {
+          console.error('Error toggling todo', err);
+          return throwError(() => err);
+        })
+      );
+  }
 }
