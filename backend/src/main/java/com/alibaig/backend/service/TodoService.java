@@ -1,6 +1,7 @@
 package com.alibaig.backend.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,15 +30,19 @@ public class TodoService {
     return savedTodoDto;
   }
 
-  public Optional<TodoDTO> updateTodo(Long id, TodoDTO todoDto) {
-    return todoRepository.findById(id).map(existingTodo -> {
-      existingTodo.setTitle(todoDto.getTitle());
-      existingTodo.setCompleted(todoDto.isCompleted());
+  public TodoDTO updateTodo(Long id, TodoDTO todoDto) {
+    Todo existingTodo = todoRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Todo not found with id: " + id));
 
-      TodoDTO updatedTodoDto = toDto(todoRepository.save(existingTodo));
+    existingTodo.setTitle(todoDto.getTitle());
+    existingTodo.setCompleted(todoDto.isCompleted());
 
-      return updatedTodoDto;
-    });
+    Todo updatedTodo = todoRepository.save(existingTodo);
+    return toDto(updatedTodo);
+  }
+
+  public void deleteTodo(Long id) {
+    todoRepository.deleteById(id);
   }
 
   public TodoDTO toDto(Todo todo) {
