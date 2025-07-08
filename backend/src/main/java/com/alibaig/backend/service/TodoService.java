@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaig.backend.dto.TodoDTO;
 import com.alibaig.backend.model.Todo;
 import com.alibaig.backend.repository.TodoRepository;
 
@@ -17,19 +18,38 @@ public class TodoService {
     this.todoRepository = todoRepository;
   }
 
-  public List<Todo> getTodos() {
-    return todoRepository.findAll();
+  public List<TodoDTO> getTodos() {
+    return todoRepository.findAll().stream().map(this::toDto).toList();
   }
 
-  public Todo createTodo(Todo todo) {
-    return todoRepository.save(todo);
+  public TodoDTO createTodo(TodoDTO todoDto) {
+    Todo todo = toEntity(todoDto);
+    TodoDTO savedTodoDto = toDto(todoRepository.save(todo));
+
+    return savedTodoDto;
   }
 
-  public Optional<Todo> updateTodo(Long id, Todo todo) {
+  public Optional<TodoDTO> updateTodo(Long id, TodoDTO todoDto) {
     return todoRepository.findById(id).map(existingTodo -> {
-      existingTodo.setTitle(todo.getTitle());
-      existingTodo.setCompleted(todo.isCompleted());
-      return todoRepository.save(existingTodo);
+      existingTodo.setTitle(todoDto.getTitle());
+      existingTodo.setCompleted(todoDto.isCompleted());
+
+      TodoDTO updatedTodoDto = toDto(todoRepository.save(existingTodo));
+
+      return updatedTodoDto;
     });
+  }
+
+  public TodoDTO toDto(Todo todo) {
+    return new TodoDTO(todo.getId(), todo.getTitle(), todo.isCompleted());
+  }
+
+  public Todo toEntity(TodoDTO dto) {
+    Todo todo = new Todo();
+    todo.setId(dto.getId());
+    todo.setTitle(dto.getTitle());
+    todo.setCompleted(dto.isCompleted());
+
+    return todo;
   }
 }

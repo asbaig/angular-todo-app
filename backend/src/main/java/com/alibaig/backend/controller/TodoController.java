@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaig.backend.dto.TodoDTO;
 import com.alibaig.backend.model.Todo;
 import com.alibaig.backend.service.TodoService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,20 +26,20 @@ public class TodoController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<Todo>> getTodos() {
+  public ResponseEntity<List<TodoDTO>> getTodos() {
     return ResponseEntity.ok(todoService.getTodos());
   }
 
   @PostMapping()
-  public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
-    Todo savedTodo = todoService.createTodo(todo);
+  public ResponseEntity<TodoDTO> createTodo(@RequestBody TodoDTO todoDto) {
+    TodoDTO savedTodo = todoService.createTodo(todoDto);
 
     return ResponseEntity.status(201).body(savedTodo);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
-    return todoService.updateTodo(id, todo).map((updatedTodo) -> ResponseEntity.ok(updatedTodo))
+  public ResponseEntity<TodoDTO> updateTodo(@PathVariable Long id, @RequestBody TodoDTO todoDto) {
+    return todoService.updateTodo(id, todoDto).map((updatedTodo) -> ResponseEntity.ok(updatedTodo))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }
