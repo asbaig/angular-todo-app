@@ -7,7 +7,7 @@ import { catchError, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:3000/todos';
+  private apiUrl = 'http://localhost:8080/api/todos';
   private http = inject(HttpClient);
 
   getTodos() {

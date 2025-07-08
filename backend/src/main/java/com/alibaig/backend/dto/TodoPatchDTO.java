@@ -1,27 +1,16 @@
 package com.alibaig.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
-public class TodoDTO {
-  private Long id;
-
-  @NotBlank
+public class TodoPatchDTO {
   private String title;
 
   private Boolean completed;
 
-  public TodoDTO(Long id, String title, Boolean completed) {
-    this.id = id;
+  public TodoPatchDTO(String title, Boolean completed) {
     this.title = title;
     this.completed = completed;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
+  public TodoPatchDTO() {
   }
 
   public String getTitle() {

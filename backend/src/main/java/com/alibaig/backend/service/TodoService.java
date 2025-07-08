@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.alibaig.backend.dto.TodoDTO;
+import com.alibaig.backend.dto.TodoPatchDTO;
 import com.alibaig.backend.exception.TodoNotFoundException;
 import com.alibaig.backend.model.Todo;
 import com.alibaig.backend.repository.TodoRepository;
@@ -41,7 +42,7 @@ public class TodoService {
         .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
 
     existingTodo.setTitle(todoDto.getTitle());
-    existingTodo.setCompleted(todoDto.isCompleted());
+    existingTodo.setCompleted(todoDto.getCompleted());
 
     Todo updatedTodo = todoRepository.save(existingTodo);
     return toDto(updatedTodo);
@@ -54,15 +55,32 @@ public class TodoService {
     todoRepository.delete(existingTodo);
   }
 
+  public TodoDTO patchTodo(Long id, TodoPatchDTO todoDto) {
+    Todo existingTodo = todoRepository.findById(id)
+        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+
+    if (todoDto.getTitle() != null) {
+      existingTodo.setTitle(todoDto.getTitle());
+    }
+
+    if (todoDto.getCompleted() != null) {
+      existingTodo.setCompleted(todoDto.getCompleted());
+    }
+
+    todoRepository.save(existingTodo);
+
+    return toDto(existingTodo);
+  }
+
   public TodoDTO toDto(Todo todo) {
-    return new TodoDTO(todo.getId(), todo.getTitle(), todo.isCompleted());
+    return new TodoDTO(todo.getId(), todo.getTitle(), todo.getCompleted());
   }
 
   public Todo toEntity(TodoDTO dto) {
     Todo todo = new Todo();
     todo.setId(dto.getId());
     todo.setTitle(dto.getTitle());
-    todo.setCompleted(dto.isCompleted());
+    todo.setCompleted(dto.getCompleted());
 
     return todo;
   }
