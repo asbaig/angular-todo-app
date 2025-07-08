@@ -23,6 +23,13 @@ public class TodoService {
     return todoRepository.findAll().stream().map(this::toDto).toList();
   }
 
+  public TodoDTO getTodo(Long id) {
+    Todo todo = todoRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Todo not found with id: " + id));
+
+    return toDto(todo);
+  }
+
   public TodoDTO createTodo(TodoDTO todoDto) {
     Todo todo = toEntity(todoDto);
     TodoDTO savedTodoDto = toDto(todoRepository.save(todo));

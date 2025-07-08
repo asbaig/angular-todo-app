@@ -31,6 +31,16 @@ public class TodoController {
     return ResponseEntity.ok(todoService.getTodos());
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<TodoDTO> getTodo(@PathVariable Long id) {
+    try {
+      TodoDTO todo = todoService.getTodo(id);
+      return ResponseEntity.ok(todo);
+    } catch (NoSuchElementException e) {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
   @PostMapping()
   public ResponseEntity<TodoDTO> createTodo(@RequestBody TodoDTO todoDto) {
     TodoDTO savedTodo = todoService.createTodo(todoDto);
