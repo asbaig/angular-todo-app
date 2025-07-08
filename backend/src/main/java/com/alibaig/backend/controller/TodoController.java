@@ -1,7 +1,6 @@
 package com.alibaig.backend.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,12 +32,10 @@ public class TodoController {
 
   @GetMapping("/{id}")
   public ResponseEntity<TodoDTO> getTodo(@PathVariable Long id) {
-    try {
-      TodoDTO todo = todoService.getTodo(id);
-      return ResponseEntity.ok(todo);
-    } catch (NoSuchElementException e) {
-      return ResponseEntity.notFound().build();
-    }
+    TodoDTO todo = todoService.getTodo(id);
+
+    return ResponseEntity.ok(todo);
+
   }
 
   @PostMapping()
@@ -50,17 +47,15 @@ public class TodoController {
 
   @PutMapping("/{id}")
   public ResponseEntity<TodoDTO> updateTodo(@PathVariable Long id, @RequestBody TodoDTO todoDto) {
-    try {
-      TodoDTO updatedTodo = todoService.updateTodo(id, todoDto);
-      return ResponseEntity.ok(updatedTodo);
-    } catch (NoSuchElementException e) {
-      return ResponseEntity.notFound().build();
-    }
+    TodoDTO updatedTodo = todoService.updateTodo(id, todoDto);
+
+    return ResponseEntity.ok(updatedTodo);
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
     todoService.deleteTodo(id);
+
     return ResponseEntity.noContent().build();
   }
 }

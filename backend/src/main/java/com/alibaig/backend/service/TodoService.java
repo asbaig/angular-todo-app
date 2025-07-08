@@ -1,12 +1,11 @@
 package com.alibaig.backend.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.alibaig.backend.dto.TodoDTO;
+import com.alibaig.backend.exception.TodoNotFoundException;
 import com.alibaig.backend.model.Todo;
 import com.alibaig.backend.repository.TodoRepository;
 
@@ -25,7 +24,7 @@ public class TodoService {
 
   public TodoDTO getTodo(Long id) {
     Todo todo = todoRepository.findById(id)
-        .orElseThrow(() -> new NoSuchElementException("Todo not found with id: " + id));
+        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
 
     return toDto(todo);
   }
@@ -39,7 +38,7 @@ public class TodoService {
 
   public TodoDTO updateTodo(Long id, TodoDTO todoDto) {
     Todo existingTodo = todoRepository.findById(id)
-        .orElseThrow(() -> new NoSuchElementException("Todo not found with id: " + id));
+        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
 
     existingTodo.setTitle(todoDto.getTitle());
     existingTodo.setCompleted(todoDto.isCompleted());
@@ -49,7 +48,10 @@ public class TodoService {
   }
 
   public void deleteTodo(Long id) {
-    todoRepository.deleteById(id);
+    Todo existingTodo = todoRepository.findById(id)
+        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+
+    todoRepository.delete(existingTodo);
   }
 
   public TodoDTO toDto(Todo todo) {
