@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaig.backend.dto.TodoDTO;
 import com.alibaig.backend.service.TodoService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -39,7 +42,7 @@ public class TodoController {
   }
 
   @PostMapping()
-  public ResponseEntity<TodoDTO> createTodo(@RequestBody TodoDTO todoDto) {
+  public ResponseEntity<TodoDTO> createTodo(@Valid @RequestBody TodoDTO todoDto) {
     TodoDTO savedTodo = todoService.createTodo(todoDto);
 
     return ResponseEntity.status(201).body(savedTodo);

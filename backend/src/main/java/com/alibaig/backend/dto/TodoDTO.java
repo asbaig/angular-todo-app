@@ -1,8 +1,13 @@
 package com.alibaig.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class TodoDTO {
   private Long id;
+
+  @NotBlank
   private String title;
+
   private boolean completed;
 
   public TodoDTO(Long id, String title, boolean completed) {
