@@ -41,4 +41,37 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler(UsernameAlreadyExistsException.class)
+  public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+    Map<String, Object> errorBody = new HashMap<>();
+    errorBody.put("timestamp", LocalDateTime.now());
+    errorBody.put("status", HttpStatus.BAD_REQUEST.value());
+    errorBody.put("error", "User Creation Failed");
+    errorBody.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(errorBody, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<?> handleUserNotFound(UserNotFoundException ex) {
+    Map<String, Object> errorBody = new HashMap<>();
+    errorBody.put("timestamp", LocalDateTime.now());
+    errorBody.put("status", HttpStatus.NOT_FOUND.value());
+    errorBody.put("error", "Not Found");
+    errorBody.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(errorBody, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(InvalidPasswordException.class)
+  public ResponseEntity<?> handleInvalidPassword(InvalidPasswordException ex) {
+    Map<String, Object> errorBody = new HashMap<>();
+    errorBody.put("timestamp", LocalDateTime.now());
+    errorBody.put("status", HttpStatus.UNAUTHORIZED.value());
+    errorBody.put("error", "Validation Failed");
+    errorBody.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(errorBody, HttpStatus.UNAUTHORIZED);
+  }
 }

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.alibaig.backend.dto.AuthRequest;
 import com.alibaig.backend.dto.AuthResponse;
+import com.alibaig.backend.exception.InvalidPasswordException;
+import com.alibaig.backend.exception.UserNotFoundException;
+import com.alibaig.backend.exception.UsernameAlreadyExistsException;
 import com.alibaig.backend.model.User;
 import com.alibaig.backend.repository.UserRepository;
 
@@ -19,6 +22,10 @@ public class AuthService {
   private final JwtService jwtService;
 
   public AuthResponse register(AuthRequest request) {
+    if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+      throw new UsernameAlreadyExistsException("Username already exists");
+    }
+
     User user = new User();
     user.setUsername(request.getUsername());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -31,10 +38,10 @@ public class AuthService {
 
   public AuthResponse login(AuthRequest request) {
     User user = userRepository.findByUsername(request.getUsername())
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-      throw new RuntimeException("Invalid password");
+      throw new InvalidPasswordException("Invalid password");
     }
 
     String token = jwtService.generateToken(user.getUsername());
