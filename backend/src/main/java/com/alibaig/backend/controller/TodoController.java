@@ -31,8 +31,10 @@ public class TodoController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<TodoDTO>> getTodos() {
-    return ResponseEntity.ok(todoService.getTodos());
+  public ResponseEntity<List<TodoDTO>> getUserTodos() {
+    List<TodoDTO> todos = todoService.getUserTodos();
+
+    return ResponseEntity.ok(todos);
   }
 
   @GetMapping("/{id}")
@@ -40,7 +42,6 @@ public class TodoController {
     TodoDTO todo = todoService.getTodo(id);
 
     return ResponseEntity.ok(todo);
-
   }
 
   @PostMapping()

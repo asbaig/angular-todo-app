@@ -8,7 +8,9 @@ import com.alibaig.backend.dto.TodoDTO;
 import com.alibaig.backend.dto.TodoPatchDTO;
 import com.alibaig.backend.exception.TodoNotFoundException;
 import com.alibaig.backend.model.Todo;
+import com.alibaig.backend.model.User;
 import com.alibaig.backend.repository.TodoRepository;
+import com.alibaig.backend.util.UserUtils;
 
 @Service
 public class TodoService {
@@ -20,7 +22,17 @@ public class TodoService {
   }
 
   public List<TodoDTO> getTodos() {
-    return todoRepository.findAll().stream().map(this::toDto).toList();
+    List<Todo> todos = todoRepository.findAll();
+  
+    return todos.stream().map(this::toDto).toList();
+  }
+
+  public List<TodoDTO> getUserTodos() {
+    User currentUser = UserUtils.getCurrentUser();
+
+    List<Todo> todos = todoRepository.findByUser(currentUser);
+    
+    return todos.stream().map(this::toDto).toList();
   }
 
   public TodoDTO getTodo(Long id) {
@@ -31,7 +43,10 @@ public class TodoService {
   }
 
   public TodoDTO createTodo(TodoDTO todoDto) {
+    User currentUser = UserUtils.getCurrentUser();
     Todo todo = toEntity(todoDto);
+    todo.setUser(currentUser);
+
     TodoDTO savedTodoDto = toDto(todoRepository.save(todo));
 
     return savedTodoDto;
