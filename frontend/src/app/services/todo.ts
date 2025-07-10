@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Todo } from '../models/todo';
-import { catchError, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class TodoService {
       catchError((err) => {
         console.error('Error fetching todos', err);
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -24,7 +24,7 @@ export class TodoService {
       catchError((err) => {
         console.error('Error adding todo', err);
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -33,7 +33,7 @@ export class TodoService {
       catchError((err) => {
         console.error('Error deleting todo', err);
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -42,7 +42,7 @@ export class TodoService {
       catchError((err) => {
         console.error('Error toggling todo', err);
         return throwError(() => err);
-      })
+      }),
     );
   }
 
@@ -51,7 +51,7 @@ export class TodoService {
       catchError((err) => {
         console.error('Error updating todo', err);
         return throwError(() => err);
-      })
+      }),
     );
   }
 }
