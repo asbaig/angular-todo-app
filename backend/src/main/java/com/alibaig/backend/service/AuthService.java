@@ -1,12 +1,12 @@
 package com.alibaig.backend.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.alibaig.backend.dto.AuthRequest;
 import com.alibaig.backend.dto.AuthResponse;
 import com.alibaig.backend.exception.InvalidPasswordException;
-import com.alibaig.backend.exception.UserNotFoundException;
 import com.alibaig.backend.exception.UsernameAlreadyExistsException;
 import com.alibaig.backend.model.User;
 import com.alibaig.backend.repository.UserRepository;
@@ -38,7 +38,7 @@ public class AuthService {
 
   public AuthResponse login(AuthRequest request) {
     User user = userRepository.findByUsername(request.getUsername())
-        .orElseThrow(() -> new UserNotFoundException("User not found"));
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
     if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
       throw new InvalidPasswordException("Invalid password");

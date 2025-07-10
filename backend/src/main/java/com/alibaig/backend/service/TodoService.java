@@ -12,67 +12,71 @@ import com.alibaig.backend.model.User;
 import com.alibaig.backend.repository.TodoRepository;
 import com.alibaig.backend.util.UserUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class TodoService {
 
   private final TodoRepository todoRepository;
 
-  public TodoService(TodoRepository todoRepository) {
-    this.todoRepository = todoRepository;
-  }
-
   public List<TodoDTO> getTodos() {
-    List<Todo> todos = todoRepository.findAll();
-  
-    return todos.stream().map(this::toDto).toList();
-  }
-
-  public List<TodoDTO> getUserTodos() {
     User currentUser = UserUtils.getCurrentUser();
 
     List<Todo> todos = todoRepository.findByUser(currentUser);
-    
+
     return todos.stream().map(this::toDto).toList();
   }
 
   public TodoDTO getTodo(Long id) {
-    Todo todo = todoRepository.findById(id)
-        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+    User currentUser = UserUtils.getCurrentUser();
+
+    Todo todo = todoRepository.findByIdAndUser(id, currentUser)
+        .orElseThrow(() -> new TodoNotFoundException(
+            "Todo for user '" + currentUser.getUsername() + "' not found with id: " + id));
 
     return toDto(todo);
   }
 
   public TodoDTO createTodo(TodoDTO todoDto) {
     User currentUser = UserUtils.getCurrentUser();
+
     Todo todo = toEntity(todoDto);
+
     todo.setUser(currentUser);
 
-    TodoDTO savedTodoDto = toDto(todoRepository.save(todo));
-
-    return savedTodoDto;
+    return toDto(todoRepository.save(todo));
   }
 
   public TodoDTO updateTodo(Long id, TodoDTO todoDto) {
-    Todo existingTodo = todoRepository.findById(id)
-        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+    User currentUser = UserUtils.getCurrentUser();
+
+    Todo existingTodo = todoRepository.findByIdAndUser(id, currentUser)
+        .orElseThrow(() -> new TodoNotFoundException(
+            "Todo for user '" + currentUser.getUsername() + "' not found with id: " + id));
 
     existingTodo.setTitle(todoDto.getTitle());
     existingTodo.setCompleted(todoDto.getCompleted());
 
-    Todo updatedTodo = todoRepository.save(existingTodo);
-    return toDto(updatedTodo);
+    return toDto(todoRepository.save(existingTodo));
   }
 
   public void deleteTodo(Long id) {
-    Todo existingTodo = todoRepository.findById(id)
-        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+    User currentUser = UserUtils.getCurrentUser();
+
+    Todo existingTodo = todoRepository.findByIdAndUser(id, currentUser)
+        .orElseThrow(() -> new TodoNotFoundException(
+            "Todo for user '" + currentUser.getUsername() + "' not found with id: " + id));
 
     todoRepository.delete(existingTodo);
   }
 
   public TodoDTO patchTodo(Long id, TodoPatchDTO todoDto) {
-    Todo existingTodo = todoRepository.findById(id)
-        .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
+    User currentUser = UserUtils.getCurrentUser();
+
+    Todo existingTodo = todoRepository.findByIdAndUser(id, currentUser)
+        .orElseThrow(() -> new TodoNotFoundException(
+            "Todo for user '" + currentUser.getUsername() + "' not found with id: " + id));
 
     if (todoDto.getTitle() != null) {
       existingTodo.setTitle(todoDto.getTitle());

@@ -31,8 +31,8 @@ public class TodoController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<TodoDTO>> getUserTodos() {
-    List<TodoDTO> todos = todoService.getUserTodos();
+  public ResponseEntity<List<TodoDTO>> getTodos() {
+    List<TodoDTO> todos = todoService.getTodos();
 
     return ResponseEntity.ok(todos);
   }
