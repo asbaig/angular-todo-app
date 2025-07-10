@@ -3,6 +3,8 @@ import { Todo } from '../../models/todo';
 import { TodoItem } from '../todo-item/todo-item';
 import { TodoForm } from '../todo-form/todo-form';
 import { TodoService } from '../../services/todo';
+import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,6 +16,8 @@ export class TodoList implements OnInit {
   todos: Todo[] = [];
 
   private todoService = inject(TodoService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.todoService.getTodos().subscribe({
@@ -86,5 +90,10 @@ export class TodoList implements OnInit {
         console.error('error updating todo, should notify user on UI', err);
       },
     });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
