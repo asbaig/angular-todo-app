@@ -36,7 +36,7 @@ export class AuthService {
           }
         }),
         catchError((err) => {
-          console.error('Error logging in', err);
+          console.error('Error registering', err);
           return throwError(() => err);
         }),
       );

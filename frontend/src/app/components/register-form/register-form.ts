@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
-  selector: 'app-login-form',
+  selector: 'app-register-form',
   imports: [FormsModule, RouterLink],
-  templateUrl: './login-form.html',
-  styleUrl: './login-form.scss',
+  templateUrl: './register-form.html',
+  styleUrl: './register-form.scss',
 })
-export class LoginForm {
+export class RegisterForm {
   username: string = '';
   password: string = '';
 
@@ -19,12 +19,12 @@ export class LoginForm {
   ) {}
 
   onSubmit() {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.register(this.username, this.password).subscribe({
       next: () => {
         this.router.navigate(['/todos']);
       },
       error: (err) => {
-        console.error('Error logging in', err);
+        console.error('Error registering', err);
       },
     });
   }
