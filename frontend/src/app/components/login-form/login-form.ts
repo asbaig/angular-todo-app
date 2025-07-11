@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,22 +10,39 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login-form.scss',
 })
 export class LoginForm {
-  username: string = '';
-  password: string = '';
+  formData = {
+    username: '',
+    password: '',
+  };
+
+  message = '';
+  showMessage = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {}
 
-  onSubmit() {
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => {
-        this.router.navigate(['/todos']);
-      },
-      error: (err) => {
-        console.error('Error logging in', err);
-      },
-    });
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      console.error('Form is invalid');
+
+      this.message = 'Please fill out all the fields';
+      this.showMessage = true;
+      return;
+    }
+
+    this.authService
+      .login(this.formData.username, this.formData.password)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/todos']);
+        },
+        error: (err) => {
+          console.error('Error logging in', err);
+          this.message = 'Invalid username or password';
+          this.showMessage = true;
+        },
+      });
   }
 }

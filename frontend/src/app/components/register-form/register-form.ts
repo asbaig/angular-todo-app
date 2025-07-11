@@ -10,8 +10,10 @@ import { AuthService } from '../../services/auth-service';
   styleUrl: './register-form.scss',
 })
 export class RegisterForm {
-  username: string = '';
-  password: string = '';
+  formData = {
+    username: '',
+    password: '',
+  };
 
   constructor(
     private authService: AuthService,
@@ -19,7 +21,7 @@ export class RegisterForm {
   ) {}
 
   onSubmit() {
-    this.authService.register(this.username, this.password).subscribe({
+    this.authService.register(this.formData.username, this.formData.password).subscribe({
       next: () => {
         this.router.navigate(['/todos']);
       },

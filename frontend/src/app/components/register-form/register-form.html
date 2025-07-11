@@ -1,20 +1,31 @@
 <div>
-  <form (ngSubmit)="onSubmit()">
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
     <input
       type="text"
       name="username"
-      [(ngModel)]="username"
+      [(ngModel)]="formData.username"
       placeholder="Username"
       required
+      #username="ngModel"
+      minlength="3"
     />
     <input
       type="password"
       name="password"
-      [(ngModel)]="password"
+      [(ngModel)]="formData.password"
       placeholder="Password"
       required
+      #password="ngModel"
     />
     <button type="submit">Register</button>
     <button type="button" [routerLink]="['/login']">Login</button>
   </form>
+
+  @if (username.invalid && username.touched) {
+    <div>Username must be at least 3 characters</div>
+  }
+
+  @if (password.invalid && password.touched) {
+    <div>Password is required</div>
+  }
 </div>
